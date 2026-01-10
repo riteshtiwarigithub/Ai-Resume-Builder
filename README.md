@@ -148,15 +148,19 @@ The application implements a clear data flow pattern:
 3. Set up environment variables:
    Create a `.env` file in the root directory with the following variables:
    ```
-   DATABASE_URL="postgresql://username:password@localhost:5432/resumesmith"
-   OPENAI_API_KEY="your-openai-api-key"
-   CLERK_PUBLISHABLE_KEY="your-clerk-publishable-key"
-   CLERK_SECRET_KEY="your-clerk-secret-key"
-   NEXT_PUBLIC_CLERK_SIGN_IN_URL="/sign-in"
-   NEXT_PUBLIC_CLERK_SIGN_UP_URL="/sign-up"
-   NEXT_PUBLIC_CLERK_AFTER_SIGN_IN_URL="/resumes"
-   NEXT_PUBLIC_CLERK_AFTER_SIGN_UP_URL="/resumes"
-   BLOB_READ_WRITE_TOKEN="your-vercel-blob-token"
+    DATABASE_URL="postgresql://username:password@localhost:5432/resumesmith"
+    GROQ_API_KEY="your-groq-api-key"
+    
+    CLERK_PUBLISHABLE_KEY="your-clerk-publishable-key"
+    CLERK_SECRET_KEY="your-clerk-secret-key"
+    
+    NEXT_PUBLIC_CLERK_SIGN_IN_URL="/sign-in"
+    NEXT_PUBLIC_CLERK_SIGN_UP_URL="/sign-up"
+    NEXT_PUBLIC_CLERK_AFTER_SIGN_IN_URL="/resumes"
+    NEXT_PUBLIC_CLERK_AFTER_SIGN_UP_URL="/resumes"
+    
+    BLOB_READ_WRITE_TOKEN="your-vercel-blob-token"
+
    ```
 
 4. Set up the database:
@@ -245,7 +249,7 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 ## 👥 Contributors
 
-- [Sunil Kumar Yadav](https://github.com/Sunil7932)
+ [Ritesh Tiwari](https://github.com/riteshtiwarigithub)
 
 ## 🙏 Acknowledgements
 - OpenAI for AI capabilities
