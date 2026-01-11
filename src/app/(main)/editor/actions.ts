@@ -3,6 +3,7 @@
 import prisma from "@/lib/prisma";
 import { resumeSchema, ResumeValues } from "@/lib/validation";
 import { auth } from "@clerk/nextjs/server";
+import { put } from "@vercel/blob";
 
 export async function saveResume(values: ResumeValues) {
   const { id } = values;
@@ -35,16 +36,41 @@ export async function saveResume(values: ResumeValues) {
   }
 
   // -----------------------------
-  // ⭐ PHOTO HANDLING (NO BLOB)
+  // ⭐ FIXED PHOTO HANDLING WITH VERCEL BLOB
   // -----------------------------
   let newPhotoUrl: string | null | undefined = existingResume?.photoUrl;
 
   if (photo instanceof File) {
-    // Convert file → base64
-    const buffer = Buffer.from(await photo.arrayBuffer());
-    const base64 = `data:${photo.type};base64,${buffer.toString("base64")}`;
-    newPhotoUrl = base64;
+    // Upload to Vercel Blob
+    if (photo.size > 1024 * 1024 * 4) {
+      throw new Error("File size must be less than 4MB");
+    }
+
+    const blob = await put(`resume-photos/${userId}-${Date.now()}-${photo.name}`, photo, {
+      access: "public",
+    });
+
+    newPhotoUrl = blob.url;
+
+    // Delete old photo if exists
+    if (existingResume?.photoUrl) {
+      try {
+        const { del } = await import("@vercel/blob");
+        await del(existingResume.photoUrl);
+      } catch (error) {
+        console.error("Failed to delete old photo:", error);
+      }
+    }
   } else if (photo === null) {
+    // Delete photo if user removed it
+    if (existingResume?.photoUrl) {
+      try {
+        const { del } = await import("@vercel/blob");
+        await del(existingResume.photoUrl);
+      } catch (error) {
+        console.error("Failed to delete photo:", error);
+      }
+    }
     newPhotoUrl = null;
   }
 
